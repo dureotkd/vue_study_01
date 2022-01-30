@@ -1,6 +1,17 @@
 <template>
   <div v-for="(value, key) in products" :key="key">
-    <p>번호 : {{ key }}</p>
+    <div>
+      <label>
+        <input
+          type="checkbox"
+          name="asffsa"
+          :checked="value.checked ? 'checked' : false"
+          v-on:change="$emit('unitChk', $event)"
+          :data-index="key"
+        />
+        삭제
+      </label>
+    </div>
     <img
       :src="value.img"
       alt="매물 이미지"
@@ -22,11 +33,12 @@
 
 <script>
 export default {
-  name: "List",
+  name: 'List',
   props: {
     products: Array,
     handleModal: Function,
     test: Function,
+    allChk: Boolean,
   },
 };
 </script>

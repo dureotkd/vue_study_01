@@ -4,74 +4,93 @@
       :productDetail="productDetail"
       :showModal="showModal"
       @addReport="addReport"
+      :allChk="allChk"
       @handleMemo="handleMemo"
     />
     <header class="menu">
       <div class="" style="display: flex; justify-content: center">
         <h4 v-for="value in menu" :key="value">{{ value }}</h4>
       </div>
-      <div class="">
+      <div class="" style="margin-bottom: 20px">
         <h1 class="red" :style="style">원룸샵</h1>
+        <label>
+          <input type="checkbox" id="allChk" v-on:change="testAllChk($event)" />
+          전체 체크
+        </label>
+        <button v-on:click="deleteList($event)">삭제</button>
       </div>
     </header>
     <main>
-      <List :products="products" :handleModal="handleModal" @test="test" />
+      <List
+        :products="products"
+        :handleModal="handleModal"
+        @test="test"
+        @unitChk="unitChk"
+        :allChk="allChk"
+      />
     </main>
   </div>
 </template>
 
 <script>
-import Modal from "./components/Modal.vue";
-import List from "./components/List.vue";
+import Modal from './components/Modal.vue';
+import List from './components/List.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
-      menu: ["Home", "Shop", "About"],
+      menu: ['Home', 'Shop', 'About'],
       showModal: false,
+      allChk: false,
+      chkIndex: [],
       products: [
         {
           index: 0,
-          name: "역삼동",
+          name: '역삼동',
           cost: 3000,
-          location: "역삼동 3번지",
+          location: '역삼동 3번지',
           repoertCnt: 0,
-          img: "https://oneroommaking.com/file_data/oneroommake/2018/12/06/7a0f3a857f96c310e29b7c9895902035.jpg",
+          img: 'https://oneroommaking.com/file_data/oneroommake/2018/12/06/7a0f3a857f96c310e29b7c9895902035.jpg',
           memo: null,
+          checked: false,
         },
         {
           index: 1,
-          name: "용두동",
+          name: '용두동',
           cost: 1000,
-          location: "용두동 3번지",
+          location: '용두동 3번지',
           repoertCnt: 0,
-          img: "http://mstatic1.e-himart.co.kr/contents/content/upload/display/306/cont24.jpg",
+          img: 'http://mstatic1.e-himart.co.kr/contents/content/upload/display/306/cont24.jpg',
           memo: null,
+          checked: false,
         },
         {
           index: 2,
-          name: "한남동",
+          name: '한남동',
           cost: 5000,
-          location: "한남동 3번지",
+          location: '한남동 3번지',
           repoertCnt: 0,
-          img: "http://www.ujeil.com/news/photo/201904/230466_83656_442.jpg",
+          img: 'http://www.ujeil.com/news/photo/201904/230466_83656_442.jpg',
           memo: null,
+          checked: false,
         },
       ],
       productDetail: {},
-      style: "color:blue !Important",
+      style: 'color:blue !Important',
     };
   },
   methods: {
-    handleMemo: function () {},
-    addReport: function (event) {
-      const dataIndex = event.target.getAttribute("data-index");
-
+    deleteList: function () {
+      this.products = this.products.filter((value) => {
+        return value.checked ? false : true;
+      });
+    },
+    addReport: function () {
       this.productDetail.repoertCnt += 1;
     },
     handleModal: function (event) {
-      const dataIndex = event.target.getAttribute("data-index");
+      const dataIndex = event.target.getAttribute('data-index');
 
       this.productDetail = this.products[dataIndex];
       this.showModal = true;
@@ -82,11 +101,26 @@ export default {
     test: (event) => {
       alert(event.target.className);
     },
+    testAllChk: function (event) {
+      const isChk = event.target.checked;
+
+      this.products.map((value) => {
+        value.checked = isChk ? true : false;
+      });
+    },
+    unitChk: function (event) {
+      const isChk = event.target.checked;
+      const dataIndex = event.target.getAttribute('data-index');
+
+      this.products[dataIndex].checked = isChk;
+
+      return event;
+    },
   },
   // useEffect와 비슷
   created() {
-    document.addEventListener("click", (event) => {
-      if (event.target.className === "black-bg") {
+    document.addEventListener('click', (event) => {
+      if (event.target.className === 'black-bg') {
         this.showModal = false;
       }
     });
