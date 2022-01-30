@@ -13,8 +13,9 @@
       >
         <p>메모</p>
         <input
+          type="text"
           autofocus
-          v-on:input="$emit('handleMemo', $event)"
+          v-on:change="$emit('handleMemo', $event)"
           :value="productDetail.memo"
         />
       </div>
@@ -30,11 +31,10 @@
 
 <script>
 export default {
-  name: "Modal",
+  name: 'Modal',
   data() {},
-  methods: {
-    test: function (event) {},
-  },
+  watch: {},
+  methods: {},
   props: {
     showModal: Boolean,
     productDetail: Object,

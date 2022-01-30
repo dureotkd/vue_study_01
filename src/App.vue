@@ -1,12 +1,14 @@
 <template>
   <div>
-    <Modal
-      :productDetail="productDetail"
-      :showModal="showModal"
-      @addReport="addReport"
-      :allChk="allChk"
-      @handleMemo="handleMemo"
-    />
+    <transition name="fade">
+      <Modal
+        :productDetail="productDetail"
+        :showModal="showModal"
+        @addReport="addReport"
+        :allChk="allChk"
+        @handleMemo="handleMemo"
+      />
+    </transition>
     <header class="menu">
       <div class="" style="display: flex; justify-content: center">
         <h4 v-for="value in menu" :key="value">{{ value }}</h4>
@@ -96,7 +98,10 @@ export default {
       this.showModal = true;
     },
     handleMemo: function (event) {
-      this.productDetail.memo = event.target.value;
+      const onlyNumber = event.target.value.replace(/[^0-9]/g, '');
+      this.productDetail.memo = onlyNumber;
+
+      return onlyNumber;
     },
     test: (event) => {
       alert(event.target.className);
@@ -178,5 +183,23 @@ div {
   background: white;
   border-radius: 8px;
   padding: 20px;
+}
+.fade-enter-from {
+  opacity: 0;
+}
+.fade-enter-active {
+  transition: all.6s;
+}
+.fade-enter-to {
+  opacity: 1;
+}
+.fade-leave-from {
+  opacity: 1;
+}
+.fade-leave-active {
+  transition: all.6s;
+}
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
